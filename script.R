@@ -9,7 +9,8 @@ task_one <- neededdata %>%
 #task 2
 task_one$kraj <- factor(task_one$kraj, levels = c("Praha", "Středočeský", "Jihočeský", "Plzeňský", "Karlovarský", "Ústecký", "Liberecký","Královéhradecký", "Pardubický", "Vysočina","Jihomoravský", "Olomoucký", "Zlínský", "Moravskoslezský"))
 
-mutate(neededdata, NUTS2 = case_when(neededdata$kraj == "Praha" ~ "Praha", 
+#task 3
+neededdata <- mutate(neededdata, NUTS2 = case_when(neededdata$kraj == "Praha" ~ "Praha", 
                                      neededdata$kraj =="Středočeský" ~ "Střední Čechy",
                                      neededdata$kraj =="Jihočeský" | neededdata$kraj =="Plzeňský" ~ "Jihozápad",
                                      neededdata$kraj =="Karlovarský" | neededdata$kraj =="Ústecký" ~ "Severozápad",
@@ -18,4 +19,6 @@ mutate(neededdata, NUTS2 = case_when(neededdata$kraj == "Praha" ~ "Praha",
                                      neededdata$kraj =="Liberecký" | neededdata$kraj =="Královéhradecký" | neededdata$kraj =="Pardubický" ~ "Severovýchod",
                                      neededdata$kraj == "Moravskoslezský" ~ "Moravskoslezsko",TRUE ~ "else"))
 print(neededdata)
+View(task_one)
+
 
