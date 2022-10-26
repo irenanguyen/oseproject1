@@ -29,15 +29,36 @@ View(task_one)
 pocet_zaku_za_kraj <- aggregate(neededdata$pocet_zaku ~ neededdata$kraj, data = neededdata, FUN = sum)
 colnames(pocet_zaku_za_kraj) <- c("Kraj", "Pocet zaku")
 View(pocet_zaku_za_kraj)  
-#visualisation task 4 a
+#visualization task 4 a
 pocet_zaku_za_kraj %>% ggplot(aes(Kraj, `Pocet zaku`, fill = Kraj))+
   geom_bar(stat="identity", position="dodge")
 
 pocet_zaku_za_NUTS2 <- aggregate(neededdata$pocet_zaku ~ neededdata$NUTS2, data = neededdata, FUN = sum)
 colnames(pocet_zaku_za_NUTS2) <- c("NUTS2", "Pocet zaku")
 View(pocet_zaku_za_NUTS2)
-#visualisation task 4 b
+#visualization task 4 b
 pocet_zaku_za_NUTS2 %>% ggplot(aes(NUTS2, `Pocet zaku`, fill = NUTS2))+
   geom_bar(stat="identity", position="dodge")
 
+#task 5 - a kolik žáků připadá na jednoho*u asistentka*u pedagoga*žky za kraj
+
+KRAJpocet_zaku_za_1asistent <- neededdata %>%
+  group_by(kraj) %>%
+  summarise(total_asistent = sum(pocet_asistentu), total_student = sum(pocet_zaku)) %>%
+  mutate(zak.na.jeden.asistent = total_student / total_asistent)
+
+#plot
+
+#task 5 - a kolik žáků připadá na jednoho*u asistentka*u pedagoga*žky za NUTS2
+NUTS2pocet_zaku_za_1asistent <- neededdata %>%
+  group_by(neededdata$NUTS2) %>%
+  summarise(total_asistent = sum(pocet_asistentu), total_student = sum(pocet_zaku)) %>%
+  mutate(zak.na.jeden.asistent = total_student / total_asistent)
+
+
+  
+
+
+  
+  
 
