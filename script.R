@@ -1,4 +1,6 @@
 library(dplyr)
+library(forcats)
+library(ggplot2)
 head(neededdata)
 #ggplot2, forcat, dplyr
 #task 1 Zjistěte kolik škol, je v každém kraji
@@ -47,7 +49,8 @@ KRAJpocet_zaku_za_1asistent <- neededdata %>%
   summarise(total_asistent = sum(pocet_asistentu), total_student = sum(pocet_zaku)) %>%
   mutate(zak.na.jeden.asistent = total_student / total_asistent)
 
-#plot
+KRAJpocet_zaku_za_1asistent <- KRAJpocet_zaku_za_1asistent[-15,]
+task_one <- task_one[-1,]
 
 #task 5 - a kolik žáků připadá na jednoho*u asistentka*u pedagoga*žky za NUTS2
 NUTS2pocet_zaku_za_1asistent <- neededdata %>%
@@ -55,10 +58,36 @@ NUTS2pocet_zaku_za_1asistent <- neededdata %>%
   summarise(total_asistent = sum(pocet_asistentu), total_student = sum(pocet_zaku)) %>%
   mutate(zak.na.jeden.asistent = total_student / total_asistent)
 
+ls()
+remove(pocet_zaku_za_1asistent)
+remove(task_four_a)
+ls()
 
-  
+#task6
 
+KRAJ_NOPSYCH_total_student <- neededdata %>%
+  group_by(kraj) %>%
+  filter(psycholog == "ne") %>%
+  summarise(total.student.no.psy = sum(pocet_zaku))
 
-  
-  
+KRAJ_YESPSYCH_total_student <- neededdata %>%
+  group_by(kraj) %>%
+  filter(psycholog == "ano") %>%
+  summarise(total.student.with.psy = sum(pocet_zaku))
+
+KRAJ_PSYch_Pocet_studentu <- left_join(KRAJ_YESPSYCH_total_student, KRAJ_NOPSYCH_total_student, by = c('kraj'))
+colnames(KRAJ_PSYch_Pocet_studentu) <- c("Kraj", "students have psychologs", "students without psychologs")
+
+NUTS2_NOPSYCH_total_student <- neededdata %>%
+  group_by(NUTS2) %>%
+  filter(psycholog == "ne") %>%
+  summarise(total.student.no.psy = sum(pocet_zaku))
+
+NUTS2_YESPSYCH_total_student <- neededdata %>%
+  group_by(NUTS2) %>%
+  filter(psycholog == "ano") %>%
+  summarise(total.student.with.psy = sum(pocet_zaku))
+
+NUTS2_PSYch_Pocet_studentu <- left_join(NUTS2_YESPSYCH_total_student, NUTS2_NOPSYCH_total_student, by = c('NUTS2'))
+colnames(NUTS2_PSYch_Pocet_studentu) <- c("NUTS2", "students have psychologs", "students without psychologs")
 
